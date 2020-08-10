@@ -1,3 +1,43 @@
+INSTALL PROMETHEUS
+
+useradd --no-create-home --shell /bin/false prometheus
+useradd --no-create-home --shell /bin/false node_exporter
+
+mkdir /etc/prometheus
+mkdir /var/lib/prometheus
+
+chown prometheus:prometheus /etc/prometheus
+chown prometheus:prometheus /var/lib/prometheus
+
+cd /tmp
+wget https://github.com/FosterG4/GPNrepo/raw/master/file/prometheus-2.20.0.linux-amd64.tar.gz
+tar xzvf prometheus-2.20.0.linux-amd64.tar.gz
+cp prometheus-2.20.0.linux-amd64/prometheus /usr/local/bin
+cp prometheus-2.20.0.linux-amd64/promtool /usr/local/bin
+
+chown prometheus:prometheus /usr/local/bin/prometheus
+chown prometheus:prometheus /usr/local/bin/promtool
+
+cp prometheus-2.20.0.linux-amd64/consoles /etc/prometheus
+cp prometheus-2.20.0.linux-amd64/console_libraries /etc/prometheus
+
+chown -R prometheus:prometheus /etc/prometheus/consoles
+chown -R prometheus:prometheus /etc/prometheus/console_libraries
+
+vim /etc/prometheus/prometheus.yml 
+
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'prometheus_master'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ip:9090']
+
+
+INSTALL NODE EXPORTER
+
 cd /tmp
 wget https://github.com/FosterG4/GPNrepo/raw/master/file/node_exporter-1.0.1.linux-amd64.tar.gz
 tar -xvf node_exporter-1.0.1.linux-amd64.tar.gz
@@ -33,10 +73,10 @@ vim /etc/prometheus/prometheus.yml
 
 
 
-  - job_name: 'node_independen'
+  - job_name: 'node_namehere'
     scrape_interval: 5s
     static_configs:
-      - targets: ['49.128.186.242:9100']
+      - targets: ['ip:9100']
 
 
 
@@ -52,8 +92,8 @@ scrape_configs:
   - job_name: 'prometheus_master'
     scrape_interval: 5s
     static_configs:
-      - targets: ['49.128.186.180:9090']
-  - job_name: 'node_independen'
+      - targets: ['ip:9090']
+  - job_name: 'node_namehere'
     scrape_interval: 5s
     static_configs:
-      - targets: ['49.128.186.242:8118']
+      - targets: ['ip:8118']
