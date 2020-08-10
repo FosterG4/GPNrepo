@@ -35,7 +35,12 @@ scrape_configs:
     static_configs:
       - targets: ['ip:9090']
 
+vim /etc/systemd/system/prometheus.service
 
+systemctl daemon-reload
+
+systemctl start prometheus
+systemctl enable prometheus
 INSTALL NODE EXPORTER
 
 cd /tmp
