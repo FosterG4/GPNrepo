@@ -43,33 +43,52 @@ chown -R prometheus:prometheus /etc/prometheus/console_libraries
 vim /etc/prometheus/prometheus.yml 
 
 global:
+
   scrape_interval: 10s
 
 scrape_configs:
+
   - job_name: 'prometheus_master'
+
     scrape_interval: 5s
+
     static_configs:
+
       - targets: ['ip:9090']
 
 vim /etc/systemd/system/prometheus.service
 
 [Unit]
+
 Description=Prometheus
+
 Wants=network-online.target
+
 After=network-online.target
 
 [Service]
+
 User=prometheus
+
 Group=prometheus
+
 Type=simple
+
 ExecStart=/usr/local/bin/prometheus \
+
     --config.file /etc/prometheus/prometheus.yml \
+
     --storage.tsdb.path /var/lib/prometheus/ \
+
     --web.console.templates=/etc/prometheus/consoles \
+
     --web.console.libraries=/etc/prometheus/console_libraries
 
 [Install]
+
 WantedBy=multi-user.target
+
+
 
 
 systemctl daemon-reload
@@ -79,6 +98,7 @@ systemctl start prometheus
 systemctl enable prometheus
 
 INSTALL NODE EXPORTER
+
 
 cd /tmp
 
@@ -93,16 +113,23 @@ vim /etc/systemd/system/node_exporter.service
 
 
 [Unit]
+
 Description=Node Exporter
+
 After=network.target
 
 [Service]
+
 User=node_exporter
+
 Group=node_exporter
+
 Type=simple
+
 ExecStart=/usr/local/bin/node_exporter
 
 [Install]
+
 WantedBy=multi-user.target
 
 
@@ -123,8 +150,11 @@ vim /etc/prometheus/prometheus.yml
 
 
   - job_name: 'node_namehere'
+
     scrape_interval: 5s
+
     static_configs:
+
       - targets: ['ip:9100']
 
 
@@ -135,14 +165,23 @@ systemctl restart prometheus
 
 
 global:
+
   scrape_interval: 10s
 
 scrape_configs:
+
   - job_name: 'prometheus_master'
+
     scrape_interval: 5s
+
     static_configs:
+
       - targets: ['ip:9090']
+
   - job_name: 'node_namehere'
+
     scrape_interval: 5s
+
     static_configs:
+
       - targets: ['ip:8118']
