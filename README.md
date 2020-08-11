@@ -113,7 +113,7 @@ vim /etc/prometheus/prometheus.yml
 systemctl restart prometheus
 
 
-#all config
+
 
 global:
   scrape_interval: 10s
